@@ -48,19 +48,37 @@ public class PelangganDaoImpl implements PelangganDao{
     public void insertPelanggan(Pelanggan pelanggan) throws PelangganException {
         PreparedStatement statement = null;
         try {
+            connection.setAutoCommit(false);
+            
             statement = connection.prepareStatement(insertPelanggan);
             statement.setString(1, pelanggan.getNama());
             statement.setString(2, pelanggan.getAlamat());
             statement.setString(3, pelanggan.getTelepon());
             statement.setString(4, pelanggan.getEmail());
             statement.executeUpdate();
+            
+            connection.commit();
+            
         } catch (SQLException e) {
+            
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                
+            }
+            
             throw new PelangganException(e.getMessage());
         } finally {
+            
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+            }
+            
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
 
                 }
             }
@@ -71,6 +89,9 @@ public class PelangganDaoImpl implements PelangganDao{
     public void updatePelanggan(Pelanggan pelanggan) throws PelangganException {
         PreparedStatement statement = null;
         try {
+            
+            connection.setAutoCommit(false);
+            
             statement = connection.prepareStatement(updatePelanggan);
             statement.setString(1, pelanggan.getNama());
             statement.setString(2, pelanggan.getAlamat());
@@ -78,13 +99,29 @@ public class PelangganDaoImpl implements PelangganDao{
             statement.setString(4, pelanggan.getEmail());
             statement.setInt(5, pelanggan.getId());
             statement.executeUpdate();
+            
+            connection.commit();
+            
         } catch (SQLException e) {
+            
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                
+            }
+            
             throw new PelangganException(e.getMessage());
         } finally {
+            
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+            }
+            
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
 
                 }
             }
@@ -95,16 +132,35 @@ public class PelangganDaoImpl implements PelangganDao{
     public void deletePelanggan(Integer id) throws PelangganException {
         PreparedStatement statement = null;
         try {
+            
+            connection.setAutoCommit(false);
+            
             statement = connection.prepareStatement(deletePelanggan);
             statement.setInt(1, id);
             statement.executeUpdate();
+            
+            connection.commit();
+            
         } catch (SQLException e) {
+            
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                
+            }
+            
             throw new PelangganException(e.getMessage());
         } finally {
+            
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+            }
+            
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
 
                 }
             }
@@ -115,6 +171,9 @@ public class PelangganDaoImpl implements PelangganDao{
     public Pelanggan getPelanggan(Integer id) throws PelangganException {
         PreparedStatement statement = null;
         try {
+            
+            connection.setAutoCommit(false);
+            
             statement = connection.prepareStatement(getById);
             statement.setInt(1, id);
             
@@ -131,15 +190,30 @@ public class PelangganDaoImpl implements PelangganDao{
             } else {
                 throw new PelangganException("Pelanggan dengan id " + id + "tidak ditemukan");
             }
+            
+            connection.commit();
             return pelanggan;
             
         } catch (SQLException e) {
+            
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                
+            }
+            
             throw new PelangganException(e.getMessage());
         } finally {
+            
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+            }
+            
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
 
                 }
             }
@@ -150,6 +224,9 @@ public class PelangganDaoImpl implements PelangganDao{
     public Pelanggan getPelanggan(String email) throws PelangganException {
         PreparedStatement statement = null;
         try {
+            
+            connection.setAutoCommit(false);
+            
             statement = connection.prepareStatement(getByEmail);
             statement.setString(1, email);
             
@@ -166,19 +243,34 @@ public class PelangganDaoImpl implements PelangganDao{
             } else {
                 throw new PelangganException("Pelanggan dengan email " + email + "tidak ditemukan");
             }
+            
+            connection.commit();
             return pelanggan;
             
         } catch (SQLException e) {
+            
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                
+            }
+            
             throw new PelangganException(e.getMessage());
         } finally {
+            
+            try {
+                connection.setAutoCommit(true);
+            } catch (SQLException e) {
+            }
+            
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
 
                 }
             }
-        }
+        } 
     }
 
     @Override
@@ -187,6 +279,9 @@ public class PelangganDaoImpl implements PelangganDao{
         List<Pelanggan> list = new ArrayList<Pelanggan>();
         
         try {
+            
+            connection.setAutoCommit(false);
+            
             statement = connection.createStatement();
             
             ResultSet result = statement.executeQuery(selectAll);
@@ -201,6 +296,8 @@ public class PelangganDaoImpl implements PelangganDao{
                 pelanggan.setEmail(result.getString("EMAIL"));
                 list.add(pelanggan);
             }
+            
+            connection.commit();
             return list;
             
         } catch (SQLException e) {
@@ -209,7 +306,7 @@ public class PelangganDaoImpl implements PelangganDao{
             if (statement != null) {
                 try {
                     statement.close();
-                } catch (Exception e) {
+                } catch (SQLException e) {
 
                 }
             }
