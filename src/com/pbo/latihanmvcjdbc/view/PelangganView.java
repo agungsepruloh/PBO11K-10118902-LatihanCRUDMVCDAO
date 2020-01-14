@@ -5,6 +5,7 @@
  */
 package com.pbo.latihanmvcjdbc.view;
 
+import com.pbo.latihanmvcjdbc.model.TabelPelangganModel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
@@ -14,11 +15,14 @@ import javax.swing.JTextField;
  */
 public class PelangganView extends javax.swing.JPanel {
 
-    /**
-     * Creates new form PelangganView
-     */
+    private TabelPelangganModel tabelModel;
+    
     public PelangganView() {
+        
+        tabelModel = new TabelPelangganModel();
         initComponents();
+        tablePelanggan.setModel(tabelModel);
+        
     }
 
     public JTable getTablePelanggan() {
