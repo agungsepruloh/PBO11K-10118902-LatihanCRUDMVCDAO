@@ -135,4 +135,12 @@ public class PelangganModel {
         fireOnDelete();
     }
     
+    public void resetPelanggan() {
+        setId(0);
+        setNama("");
+        setAlamat("");
+        setTelepon("");
+        setEmail("");
+    }
+    
 }
