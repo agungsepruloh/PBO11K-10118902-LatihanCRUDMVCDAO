@@ -17,6 +17,10 @@ import javax.swing.table.AbstractTableModel;
 public class TabelPelangganModel extends AbstractTableModel {
     
     private List<Pelanggan> list = new ArrayList<Pelanggan>();
+    
+    public void setList(List<Pelanggan> list) {
+        this.list = list;
+    }
 
     @Override
     public int getRowCount() {

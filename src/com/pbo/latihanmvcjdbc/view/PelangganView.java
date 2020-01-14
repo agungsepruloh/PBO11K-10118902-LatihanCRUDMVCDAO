@@ -5,24 +5,42 @@
  */
 package com.pbo.latihanmvcjdbc.view;
 
+import com.pbo.latihanmvcjdbc.controller.PelangganController;
+import com.pbo.latihanmvcjdbc.database.KingsBarberShopDatabase;
+import com.pbo.latihanmvcjdbc.entity.Pelanggan;
+import com.pbo.latihanmvcjdbc.error.PelangganException;
+import com.pbo.latihanmvcjdbc.event.PelangganListener;
+import com.pbo.latihanmvcjdbc.model.PelangganModel;
 import com.pbo.latihanmvcjdbc.model.TabelPelangganModel;
+import com.pbo.latihanmvcjdbc.service.PelangganDao;
+import java.sql.SQLException;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
  * @author AGUNGSEPRULOH
  */
-public class PelangganView extends javax.swing.JPanel {
+public class PelangganView extends javax.swing.JPanel implements PelangganListener, ListSelectionListener {
 
     private TabelPelangganModel tabelModel;
+    private PelangganModel model;
+    private PelangganController controller;
     
     public PelangganView() {
         
         tabelModel = new TabelPelangganModel();
-        initComponents();
-        tablePelanggan.setModel(tabelModel);
+        model = new PelangganModel();
+        model.setListener(this);
         
+        controller = new PelangganController();
+        controller.setModel(model);
+        
+        initComponents();
+        tablePelanggan.getSelectionModel().addListSelectionListener(this);
+        tablePelanggan.setModel(tabelModel);
     }
 
     public JTable getTablePelanggan() {
@@ -124,10 +142,25 @@ public class PelangganView extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tablePelanggan);
 
         btnReset.setText("RESET");
+        btnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnResetActionPerformed(evt);
+            }
+        });
 
         btnSimpan.setText("SIMPAN");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
 
         btnUbah.setText("UBAH");
+        btnUbah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUbahActionPerformed(evt);
+            }
+        });
 
         btnHapus.setText("HAPUS");
         btnHapus.addActionListener(new java.awt.event.ActionListener() {
@@ -220,8 +253,20 @@ public class PelangganView extends javax.swing.JPanel {
     }//GEN-LAST:event_txtIdActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        // TODO add your handling code here:
+        controller.deletePelanggan(this);
     }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnResetActionPerformed
+        controller.resetPelanggan(this);
+    }//GEN-LAST:event_btnResetActionPerformed
+
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        controller.insertPelanggan(this);
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
+    private void btnUbahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUbahActionPerformed
+        controller.updatePelanggan(this);
+    }//GEN-LAST:event_btnUbahActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -245,4 +290,49 @@ public class PelangganView extends javax.swing.JPanel {
     private javax.swing.JTextField txtNama;
     private javax.swing.JTextField txtTelepon;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onChange(PelangganModel model) {
+        txtId.setText(model.getId() + "");
+        txtNama.setText(model.getNama());
+        txtAlamat.setText(model.getAlamat());
+        txtTelepon.setText(model.getTelepon());
+        txtEmail.setText(model.getEmail());
+    }
+
+    @Override
+    public void onInsert(Pelanggan pelanggan) {
+        tabelModel.add(pelanggan);
+    }
+
+    @Override
+    public void onUpdate(Pelanggan pelanggan) {
+        int index = tablePelanggan.getSelectedRow();
+        tabelModel.set(index, pelanggan);
+    }
+
+    @Override
+    public void onDelete() {
+        int index = tablePelanggan.getSelectedRow();
+        tabelModel.remove(index);
+    }
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        try {
+            Pelanggan model = tabelModel.get(tablePelanggan.getSelectedRow());
+            txtId.setText(model.getId() + "");
+            txtNama.setText(model.getNama());
+            txtAlamat.setText(model.getAlamat());
+            txtTelepon.setText(model.getTelepon());
+            txtEmail.setText(model.getEmail());
+        } catch (IndexOutOfBoundsException exception) {
+            
+        }
+    }
+    
+    public void loadDatabase() throws SQLException, PelangganException {
+        PelangganDao dao = KingsBarberShopDatabase.getPelangganDao();
+        tabelModel.setList(dao.selectAllPelanggan());
+    }
 }
