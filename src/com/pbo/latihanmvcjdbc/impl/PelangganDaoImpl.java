@@ -18,7 +18,10 @@ import java.util.List;
 
 /**
  *
- * @author AGUNGSEPRULOH
+ * @author : AGUNGSEPRULOH
+ * NIM     : 10118902
+ * Kelas   : IF-11K
+ * 
  */
 public class PelangganDaoImpl implements PelangganDao{
     

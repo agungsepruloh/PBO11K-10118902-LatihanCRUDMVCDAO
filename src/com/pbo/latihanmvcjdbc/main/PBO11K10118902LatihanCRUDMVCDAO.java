@@ -18,7 +18,10 @@ import javax.swing.SwingUtilities;
 
 /**
  *
- * @author AGUNGSEPRULOH
+ * @author : AGUNGSEPRULOH
+ * NIM     : 10118902
+ * Kelas   : IF-11K
+ * 
  */
 public class PBO11K10118902LatihanCRUDMVCDAO {
 

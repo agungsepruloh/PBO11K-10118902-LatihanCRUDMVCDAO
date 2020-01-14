@@ -10,7 +10,10 @@ import com.pbo.latihanmvcjdbc.model.PelangganModel;
 
 /**
  *
- * @author AGUNGSEPRULOH
+ * @author : AGUNGSEPRULOH
+ * NIM     : 10118902
+ * Kelas   : IF-11K
+ * 
  */
 public interface PelangganListener {
     

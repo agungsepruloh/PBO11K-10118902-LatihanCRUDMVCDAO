@@ -11,7 +11,10 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author AGUNGSEPRULOH
+ * @author : AGUNGSEPRULOH
+ * NIM     : 10118902
+ * Kelas   : IF-11K
+ * 
  */
 public class PelangganController {
     

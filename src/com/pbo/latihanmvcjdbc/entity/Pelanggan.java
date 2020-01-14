@@ -9,7 +9,10 @@ import java.util.Objects;
 
 /**
  *
- * @author AGUNGSEPRULOH
+ * @author : AGUNGSEPRULOH
+ * NIM     : 10118902
+ * Kelas   : IF-11K
+ * 
  */
 public class Pelanggan {
     
